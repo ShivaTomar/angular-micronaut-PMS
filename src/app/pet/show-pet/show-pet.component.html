@@ -1,0 +1,26 @@
+<h1>Owner Pets</h1>
+
+<div *ngIf="!pets.length">
+  <h3>No Pet Available!</h3>
+</div>
+
+<div *ngIf="alertMessage">{{alertMessage}}</div>
+
+<div *ngIf="pets.length">
+  <ul class="pets">
+    <li *ngFor="let pet of pets">
+      <span (click)="petDetails(pet.id)">{{pet.name}}</span>
+      <button routerLink="/manage-pet/{{pet.id}}">Edit</button>
+      <button (click)="deletePet(pet.id)">Delete</button>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="pet">
+  <p>Name: {{pet.name}}</p>
+  <p>Species: {{pet.species}}</p>
+  <p>Breed: {{pet.breed}}</p>
+  <p>Color: {{pet.color}}</p>
+
+  <button (click)="hideDetails()">close</button>
+</div>

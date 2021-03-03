@@ -1,0 +1,43 @@
+<h2>Add Pet</h2>
+
+<p *ngIf="alertMessage">{{alertMessage}}</p>
+
+<form [formGroup]="petForm" (ngSubmit)="onSubmit()">
+
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" formControlName="name" class="form-control" />
+    <div *ngIf="isInvalidInput('name')" class="invalid-feedback">
+      <div *ngIf="nameHasError()">{{nameErrorMessage()}}</div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="species">Species</label>
+    <input type="text" formControlName="species" class="form-control" />
+    <div *ngIf="isInvalidInput('species')" class="invalid-feedback">
+      <div *ngIf="speciesHasError()">{{speciesErrorMessage()}}</div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="breed">Breed</label>
+    <input type="text" formControlName="breed" class="form-control" />
+    <div *ngIf="isInvalidInput('breed')" class="invalid-feedback">
+      <div *ngIf="breedHasError()">{{breedErrorMessage()}}</div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="color">Color</label>
+    <input type="text" formControlName="color" class="form-control"/>
+    <div *ngIf="isInvalidInput('color')" class="invalid-feedback">
+      <div *ngIf="colorHasError()">{{colorErrorMessage()}}</div>
+    </div>
+  </div>
+
+  <button type="submit">Add</button>
+  <button [routerLink]="['/home']">Cancel</button>
+</form>
+
+<p>{{petForm.status}}</p>
