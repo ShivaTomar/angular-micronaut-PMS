@@ -15,8 +15,8 @@ export class ManageOwnerComponent implements OnInit {
   profileForm: FormGroup;
 
   get f() { return this.profileForm.controls };
-  getFullNameFC() { return this.profileForm.get('fullName') };
-  getPasswordFC() { return this.profileForm.get("password") };
+  get fullNameFc() { return this.profileForm.get('fullName') };
+  get passwordFc() { return this.profileForm.get('password') };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,26 +34,21 @@ export class ManageOwnerComponent implements OnInit {
     })
   }
 
-  isInvalidInput(fieldName): boolean {
-
-    return this.profileForm.get(fieldName).invalid && (this.profileForm.get(fieldName).dirty || this.profileForm.touched);
-  }
-
   fullNameFCHasError() {
-    return !!this.fullNameErrorMessage;
+    return (this.fullNameFc.touched || this.fullNameFc.dirty) && !!this.fullNameErrorMessage();
   }
 
   passwordFCHasError() {
-    return !!this.passwordErrorMessage
+    return (this.passwordFc.touched || this.passwordFc.dirty) && !!this.passwordErrorMessage();
   }
 
   fullNameErrorMessage() {
-    return this.getFullNameFC().hasError('required') ? 'Full Name is required' : '';
+    return this.fullNameFc.hasError('required') ? 'Full Name is required' : '';
   }
 
   passwordErrorMessage() {
-    return this.getPasswordFC().hasError('required') ? 'Password is required'
-      : this.getPasswordFC().hasError('minlength') ? 'Password must be at least 6 character long.' : '';
+    return this.passwordFc.hasError('required') ? 'Password is required'
+    : this.passwordFc.hasError('minlength') ? 'Password must be at least 6 character long.' : '';
   }
 
   ownerDetails(): void {
@@ -62,15 +57,14 @@ export class ManageOwnerComponent implements OnInit {
 
   onSubmit() {
 
-    if (this.profileForm.invalid) {
+    if (!this.profileForm.valid) {
       this.profileForm.markAsTouched();
       return;
     }
 
-    this.userService.updateUser(this.f.fullName.value, this.f.password.value)
-      .subscribe(success => {
-        this.AuthenticationService.currentUserSubject.next(success);
-        this.router.navigate(["/"])
+    this.userService.updateUser(this.f.fullName.value, this.f.password.value).subscribe(success => {
+      this.AuthenticationService.currentUserSubject.next(success);
+      this.router.navigate(["/"])
     });
   }
 }

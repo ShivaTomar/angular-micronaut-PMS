@@ -5,34 +5,26 @@
   <div class="form-group">
     <label for="fullName">Full Name</label>
     <input type="text" formControlName="fullName" class="form-control" />
-    <div *ngIf="isInvalidInput('fullName')" class="invalid-feedback">
-      <div *ngIf="FullNameHasError()">{{fullNameErrorMessage()}}</div>
-    </div>
+    <div *ngIf="FullNameHasError()">{{fullNameErrorMessage()}}</div>
   </div>
 
   <div class="form-group">
     <label for="username">Username</label>
     <input type="text" formControlName="username" class="form-control" />
-    <div *ngIf="isInvalidInput('username')" class="invalid-feedback">
-      <div *ngIf="UserNameHasError()">{{userNameErrorMessage()}}</div>
-    </div>
+    <div *ngIf="UserNameHasError()">{{userNameErrorMessage()}}</div>
     <div *ngIf="loading">checking available...</div>
   </div>
 
   <div class="form-group">
     <label>Email</label>
     <input type="text" formControlName="email" class="form-control" />
-    <div *ngIf="isInvalidInput('email')" class="invalid-feedback">
-      <div *ngIf="EmailHasError()">{{EmailErrorMessage()}}</div>
-    </div>
+    <div *ngIf="EmailHasError()">{{EmailErrorMessage()}}</div>
   </div>
 
   <div class="form-group">
     <label>Password</label>
     <input type="password" formControlName="password" class="form-control" />
-    <div *ngIf="isInvalidInput('password')" class="invalid-feedback">
-      <div *ngIf="PasswordHasError()">{{passwordErrorMessage()}}</div>
-    </div>
+    <div *ngIf="PasswordHasError()">{{passwordErrorMessage()}}</div>
   </div>
 
   <div formGroupName="address">
@@ -40,9 +32,7 @@
     <div class="form-group">
       <label for="line1">Address</label>
       <input type="text" formControlName="line1" class="form-control" />
-      <div *ngIf="isInvalidAddressInput('line1')" class="invalid-feedback">
-        <div *ngIf="a.line1.errors.required">Address is required</div>
-      </div>
+      <div *ngIf="addressHasError()" class="invalid-feedback">{{addressErrorMessage()}}</div>
     </div>
 
     <div class="form-group">
@@ -53,31 +43,27 @@
     <div class="form-group">
       <label for="district">District</label>
       <input type="text" formControlName="district" class="form-control" />
-      <div *ngIf="isInvalidAddressInput('district')" class="invalid-feedback">
-        <div *ngIf="a.district.errors.required">District is required</div>
-      </div>
+      <div *ngIf="districtHasError()" class="invalid-feedback">{{districtErrorMessage()}}</div>
     </div>
 
     <div class="form-group">
       <label for="state">State</label>
       <input type="text" formControlName="state" class="form-control" />
-      <div *ngIf="isInvalidAddressInput('state')" class="invalid-feedback">
-        <div *ngIf="a.state.errors.required">State is required</div>
-      </div>
+
+      <div *ngIf="stateHasError()" class="invalid-feedback">{{stateErrorMessage()}}</div>
+
     </div>
 
     <div class="form-group">
       <label for="pincode">Pincode</label>
       <input type="text" formControlName="pincode" class="form-control" />
-      <div *ngIf="isInvalidAddressInput('pincode')" class="invalid-feedback">
-        <div *ngIf="a.pincode.errors.required">Pincode is required</div>
-        <div *ngIf="a.pincode.errors.maxlength">Pincode cannot be of more than 6 digits</div>
-      </div>
+      <div *ngIf="pincodeHasError()" class="invalid-feedback">{{pincodeErrorMessage()}}</div>
     </div>
+
   </div>
 
-  <button type="submit" [disabled]="registerForm.invalid || registerForm.pending" >Register</button>
-  <a routerLink="/login">Cancel</a>
+  <button type="submit" [disabled]="registerForm.invalid || registerForm.pending">Register</button>
+  <button type="button" routerLink="/login">Cancel</button>
 </form>
 
 <p>{{registerForm.status}}</p>

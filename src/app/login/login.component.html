@@ -5,22 +5,18 @@
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text" formControlName="username" class="form-control" />
-        <div *ngIf="isInvalidInput('username')" class="invalid-feedback">
-            <div *ngIf="usernameFCHasError()">{{usernameErrorMessage()}}</div>
-        </div>
+        <div *ngIf="usernameFCHasError()">{{usernameErrorMessage()}}</div>
     </div>
 
     <div class="form-group">
         <label for="password">Password</label>
         <input type="password" formControlName="password" class="form-control" />
-        <div *ngIf="isInvalidInput('password')" class="invalid-feedback">
-            <div *ngIf="passwordFCHasError()">{{passwordErrorMessage()}}</div>
-        </div>
+        <div *ngIf="passwordFCHasError()">{{passwordErrorMessage()}}</div>
     </div>
-    
+
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Login</button>
-        <button [routerLink]="['/register']" class="btn btn-primary">Register</button>
+        <button [routerLink]="['/register']" type="button" class="btn btn-primary">Register</button>
     </div>
 
     <div>

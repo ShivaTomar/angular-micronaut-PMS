@@ -14,8 +14,8 @@ export class LoginComponent implements OnInit {
   error: String;
 
   get f() { return this.loginForm.controls };
-  usernameFormControl() { return this.loginForm.get("username"); }
-  passwordFormControl() { return this.loginForm.get("password"); }
+  get usernameFC() { return this.loginForm.get("username"); }
+  get passwordFC() { return this.loginForm.get("password"); }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,28 +31,24 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  isInvalidInput(fieldName) {
-    return this.loginForm.get(fieldName).invalid && (this.loginForm.get(fieldName).dirty || this.loginForm.touched);
-  }
-
   usernameFCHasError() {
-    return !!this.usernameErrorMessage;
+    return (this.usernameFC.dirty || this.usernameFC.touched) && !!this.usernameErrorMessage();
   }
 
   passwordFCHasError() {
-    return !!this.passwordErrorMessage;
+    return (this.passwordFC.dirty || this.passwordFC.touched) && !!this.passwordErrorMessage();
   }
 
   usernameErrorMessage() {
-    return this.usernameFormControl().hasError('required') ? 'Username is required' : '';
+    return this.usernameFC.hasError('required') ? 'Username is required' : '';
   }
 
   passwordErrorMessage() {
-    return this.passwordFormControl().hasError('required') ? 'Password is required' : '';
+    return this.passwordFC.hasError('required') ? 'Password is required' : '';
   }
 
   onSubmit() {
-    if (this.loginForm.invalid) {
+    if (!this.loginForm.valid) {
       this.loginForm.markAllAsTouched();
       return;
     }

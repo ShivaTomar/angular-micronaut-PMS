@@ -5,7 +5,9 @@ import { config } from '../configs';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Owner } from "../_models/owner";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthenticationService {
   currentUserSubject: BehaviorSubject<Owner>;
   currentUser: Observable<Owner>;
@@ -27,7 +29,7 @@ export class AuthenticationService {
         }
         this.currentUserSubject.next(user);
         return user;
-    }));
+      }));
   }
 
   logout() {

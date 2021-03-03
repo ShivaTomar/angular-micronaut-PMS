@@ -16,11 +16,10 @@ export class EditPetComponent implements OnInit {
   alertMessage: String;
 
   get f() { return this.editPetForm.controls }
-  
-  getNameFc() { return this.editPetForm.get('name') }
-  getBreedFc() { return this.editPetForm.get('breed') }
-  getColorFc() { return this.editPetForm.get('color') }
-  getSpeciesFc() { return this.editPetForm.get('species') }
+  get NameFc() { return this.editPetForm.get('name') }
+  get BreedFc() { return this.editPetForm.get('breed') }
+  get ColorFc() { return this.editPetForm.get('color') }
+  get SpeciesFc() { return this.editPetForm.get('species') }
 
   constructor(
     private petService: PetService, 
@@ -40,40 +39,36 @@ export class EditPetComponent implements OnInit {
     })
   }
 
-  isInvalidInput(fieldName) {
-    return this.editPetForm.get(fieldName).invalid && (this.editPetForm.get(fieldName).dirty || this.editPetForm.touched);
-  }
-
   nameHasError() {
-    return !!this.nameErrorMessage;
+    return (this.NameFc.touched || this.NameFc.dirty) && !!this.nameErrorMessage();
   }
 
   breedHasError() {
-    return !!this.breedErrorMessage;
+    return (this.NameFc.touched || this.NameFc.dirty) && !!this.breedErrorMessage();
   }
 
   colorHasError() {
-    return !!this.colorErrorMessage;
+    return (this.NameFc.touched || this.NameFc.dirty) && !!this.colorErrorMessage();
   }
 
   speciesHasError() {
-    return !!this.speciesErrorMessage;
+    return (this.NameFc.touched || this.NameFc.dirty) && !!this.speciesErrorMessage();
   }
 
   nameErrorMessage() {
-    return this.getNameFc().hasError('required') ? 'Name is required' : '';
+    return this.NameFc.hasError('required') ? 'Name is required' : '';
   }
 
   breedErrorMessage() {
-    return this.getBreedFc().hasError('required') ? 'Breed is required' : '';
-  }
-
-  speciesErrorMessage() {
-    return this.getSpeciesFc().hasError('required') ? 'Species is required' : '';
+    return this.BreedFc.hasError('required') ? 'Breed is required' : '';
   }
 
   colorErrorMessage() {
-    return this.getColorFc().hasError('required') ? 'Color is required' : '';
+    return this.ColorFc.hasError('required') ? 'Color is required' : '';
+  }
+  
+  speciesErrorMessage() {
+    return this.SpeciesFc.hasError('required') ? 'Species is required' : '';
   }
 
   petDetails() {
@@ -82,7 +77,7 @@ export class EditPetComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.editPetForm.invalid) {
+    if (!this.editPetForm.valid) {
       this.editPetForm.markAllAsTouched;
       return;
     }

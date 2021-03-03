@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { OwnerProfileComponent } from './owner-profile.component';
 import { AuthGuard } from 'src/app/_guards/auth.guard';
 
-const routes: Routes = [{ path: '', component: OwnerProfileComponent, canActivate: [AuthGuard] }];
+const routes: Routes = [{ path: '', component: OwnerProfileComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

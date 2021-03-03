@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ShowPetComponent } from './show-pet.component';
 import { AuthGuard } from 'src/app/_guards/auth.guard';
 
-const routes: Routes = [{ path: '', component: ShowPetComponent, canActivate: [AuthGuard] }];
+const routes: Routes = [{ path: '', component: ShowPetComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -12,7 +12,9 @@ export class AppComponent {
   title = 'angular-pms';
   public currentUser: Owner;
 
-  constructor(private router: Router, private authenticationService: AuthenticationService) {
+  constructor(private router: Router, private authenticationService: AuthenticationService) {}
+
+  ngOnInit(): void {
     this.authenticationService.currentUser.subscribe(user => this.currentUser = user);
   }
 
