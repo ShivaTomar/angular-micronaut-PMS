@@ -1,13 +1,15 @@
 <div>
   <h1>Owner Details</h1>
 
-  <p>full name: {{owner.fullName}}</p>
-  <p>username: {{owner.username}}</p>
-  <p>email: {{owner.email}}</p>
-  <p>address: {{owner.address.line1}} {{owner.address.line2}}</p>
-  <p>state: {{owner.address.state}}</p>
-  <p>district: {{owner.address.district}}</p>
-  <p>pincode: {{owner.address.pincode}}</p>
+  <ng-container *ngIf="owner">
+    <p>Full Name: {{owner.fullName}}</p>
+    <p>Username: {{owner.username}}</p>
+    <p>Email: {{owner.email}}</p>
+    <p>Address: {{owner.address.line1}} {{owner.address.line2}}</p>
+    <p>State: {{owner.address.state}}</p>
+    <p>District: {{owner.address.district}}</p>
+    <p>Pincode: {{owner.address.pincode}}</p>
+  </ng-container>
 
   <button routerLink="/manage-owner">Edit Profile</button>
 </div>

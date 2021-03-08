@@ -11,7 +11,6 @@ export class AddPetComponent implements OnInit {
   petForm: FormGroup;
   alertMessage: String;
 
-  get f() { return this.petForm.controls }
   get NameFc() { return this.petForm.get('name') }
   get BreedFc() { return this.petForm.get('breed') }
   get ColorFc() { return this.petForm.get('color') }
@@ -24,11 +23,11 @@ export class AddPetComponent implements OnInit {
 
   ngOnInit(): void {
     this.petForm = this.formBuilder.group({
-      name: ['Tim', Validators.required],
-      species: ['Dog', Validators.required],
-      breed: ['Husky', Validators.required],
-      color: ['White', Validators.required]
-    })
+      name: ['tim', Validators.required],
+      species: ['dog', Validators.required],
+      breed: ['german shepard', Validators.required],
+      color: ['brown', Validators.required]
+    })    
   }
 
   nameHasError() {
@@ -36,15 +35,15 @@ export class AddPetComponent implements OnInit {
   }
 
   breedHasError() {
-    return (this.NameFc.touched || this.NameFc.dirty) && !!this.breedErrorMessage();
+    return (this.BreedFc.touched || this.BreedFc.dirty) && !!this.breedErrorMessage();
   }
 
   colorHasError() {
-    return (this.NameFc.touched || this.NameFc.dirty) && !!this.colorErrorMessage();
+    return (this.ColorFc.touched || this.ColorFc.dirty) && !!this.colorErrorMessage();
   }
 
   speciesHasError() {
-    return (this.NameFc.touched || this.NameFc.dirty) && !!this.speciesErrorMessage();
+    return (this.SpeciesFc.touched || this.SpeciesFc.dirty) && !!this.speciesErrorMessage();
   }
 
   nameErrorMessage() {
@@ -72,7 +71,6 @@ export class AddPetComponent implements OnInit {
 
     this.petService.addPet(this.petForm.value).subscribe(
       success => {
-        this.petForm.markAsUntouched();
         this.petForm.reset();
         this.alertMessage = "A new pet is added!";
       }

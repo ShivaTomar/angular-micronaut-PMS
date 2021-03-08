@@ -1,8 +1,18 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
-  <div class="navbar-nav">
-      <button class="nav-item nav-link" routerLink="/">Home</button>
-      <button class="nav-item nav-link" (click)="logout()">Logout</button>
-  </div>
-</nav>
+<ng-container *ngIf="currentUser">
+  <mat-toolbar class="tool-bar">
+
+    <button mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span routerLink="/">Pet Store</span>
+    <span class="spacer"></span>
+
+    <button mat-icon-button>
+      <mat-icon (click)="logout()">logout</mat-icon>
+    </button>
+    
+  </mat-toolbar>
+</ng-container>
 
 <router-outlet></router-outlet>

@@ -17,6 +17,6 @@ export class OwnerProfileComponent implements OnInit {
   }
 
   ownerDetails(): void {
-    this.userService.getOwner().subscribe(user => this.owner = user);
+    this.userService.getOwner().subscribe((result: any) => { this.owner = result; });
   }
 }

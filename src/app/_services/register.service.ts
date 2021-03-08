@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Owner } from "../_models/owner";
 import { config } from '../configs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,7 @@ export class RegisterService {
     return this.http.post<Owner>(`${config.apiUrl}/register`, user);
   }
 
-  isUniqueEmail(email: String) {
-    return this.http.post<any>(`${config.apiUrl}/verify-email`, { email: email });
-  }
-
   isUniqueUsername(username: String) {
-    return this.http.post<any>(`${config.apiUrl}/verify-username`, { username: username });
+    return this.http.post(`${config.apiUrl}/register/verify-username`, { username: username });
   }
 }

@@ -14,6 +14,6 @@ export class LoggedInAuthGuard implements CanActivate {
       return true;
     }
 
-    return this.router.navigate(["/home"]);
+    return this.router.createUrlTree(['/home']);
   }
 }

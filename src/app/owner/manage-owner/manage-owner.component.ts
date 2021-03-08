@@ -3,7 +3,7 @@ import { Owner } from 'src/app/_models/owner';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/_services/user.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { computeMsgId } from '@angular/compiler';
 
 @Component({
   selector: 'app-manage-owner',
@@ -12,25 +12,25 @@ import { AuthenticationService } from 'src/app/_services/authentication.service'
 })
 export class ManageOwnerComponent implements OnInit {
   owner: Owner;
-  profileForm: FormGroup;
+  profilePasswordForm: FormGroup;
+  profileFullNameForm: FormGroup;
 
-  get f() { return this.profileForm.controls };
-  get fullNameFc() { return this.profileForm.get('fullName') };
-  get passwordFc() { return this.profileForm.get('password') };
+  get fullNameFc() { return this.profileFullNameForm.get('fullName') };
+  get passwordFc() { return this.profilePasswordForm.get('password') };
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private AuthenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
-    this.ownerDetails()
+    this.profileFullNameForm = this.formBuilder.group({
+      fullName: ['', [Validators.required]],
+    })
 
-    this.profileForm = this.formBuilder.group({
-      fullName: [this.owner.fullName, [Validators.required]],
-      password: [this.owner.password, [Validators.required, Validators.minLength(6)]],
+    this.profilePasswordForm = this.formBuilder.group({
+      password: ['', [Validators.required, Validators.minLength(6)]],
     })
   }
 
@@ -51,20 +51,25 @@ export class ManageOwnerComponent implements OnInit {
     : this.passwordFc.hasError('minlength') ? 'Password must be at least 6 character long.' : '';
   }
 
-  ownerDetails(): void {
-    this.userService.getOwner().subscribe(user => { this.owner = user; });
-  }
-
-  onSubmit() {
-
-    if (!this.profileForm.valid) {
-      this.profileForm.markAsTouched();
+  changeFullName() {
+    if (!this.fullNameFc.valid) {
+      this.fullNameFc.markAllAsTouched();
       return;
     }
 
-    this.userService.updateUser(this.f.fullName.value, this.f.password.value).subscribe(success => {
-      this.AuthenticationService.currentUserSubject.next(success);
-      this.router.navigate(["/"])
-    });
+    this.userService.updateFullName(this.fullNameFc.value).subscribe(() => {
+      this.router.navigate(["/"]);
+    })
+  }
+
+  changePassword() {
+    if (!this.passwordFc.valid) {
+      this.passwordFc.markAllAsTouched();
+      return;
+    }
+
+    this.userService.updatePassword(this.passwordFc.value).subscribe(() => {
+      this.router.navigate(["/"]);
+    })
   }
 }

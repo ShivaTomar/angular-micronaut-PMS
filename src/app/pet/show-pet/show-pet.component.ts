@@ -20,7 +20,7 @@ export class ShowPetComponent implements OnInit {
   }
 
   getPets() {
-    this.petService.getPets().subscribe(result => this.pets = result);
+    this.petService.getPets().subscribe((result: any) => { this.pets = result; });
   }
 
   petDetails(id: number) {
@@ -28,11 +28,11 @@ export class ShowPetComponent implements OnInit {
   }
 
   deletePet(id: number) {
-    this.pets = this.pets.filter(pet => pet.id != id);
-    if (this.pet && this.pet.id === id) this.hideDetails();
+    this.pets = this.pets.filter(pet => pet._id != id);
+    if (this.pet && this.pet._id === id) this.hideDetails();
 
     this.petService.deletePet(id).subscribe(result => {
-      this.alertMessage = "Deleted Successfully"
+      this.alertMessage = "Deleted successfully!"
     });
   }
 

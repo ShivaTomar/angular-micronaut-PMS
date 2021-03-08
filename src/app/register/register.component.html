@@ -5,26 +5,26 @@
   <div class="form-group">
     <label for="fullName">Full Name</label>
     <input type="text" formControlName="fullName" class="form-control" />
-    <div *ngIf="FullNameHasError()">{{fullNameErrorMessage()}}</div>
+    <div *ngIf="FullNameHasError()" class="invalid-feedback">{{fullNameErrorMessage()}}</div>
   </div>
 
   <div class="form-group">
     <label for="username">Username</label>
     <input type="text" formControlName="username" class="form-control" />
-    <div *ngIf="UserNameHasError()">{{userNameErrorMessage()}}</div>
+    <div *ngIf="UserNameHasError()" class="invalid-feedback">{{userNameErrorMessage()}}</div>
     <div *ngIf="loading">checking available...</div>
   </div>
 
   <div class="form-group">
     <label>Email</label>
     <input type="text" formControlName="email" class="form-control" />
-    <div *ngIf="EmailHasError()">{{EmailErrorMessage()}}</div>
+    <div *ngIf="EmailHasError()" class="invalid-feedback">{{EmailErrorMessage()}}</div>
   </div>
 
   <div class="form-group">
     <label>Password</label>
     <input type="password" formControlName="password" class="form-control" />
-    <div *ngIf="PasswordHasError()">{{passwordErrorMessage()}}</div>
+    <div *ngIf="PasswordHasError()" class="invalid-feedback">{{passwordErrorMessage()}}</div>
   </div>
 
   <div formGroupName="address">
@@ -49,9 +49,7 @@
     <div class="form-group">
       <label for="state">State</label>
       <input type="text" formControlName="state" class="form-control" />
-
       <div *ngIf="stateHasError()" class="invalid-feedback">{{stateErrorMessage()}}</div>
-
     </div>
 
     <div class="form-group">
@@ -62,7 +60,7 @@
 
   </div>
 
-  <button type="submit" [disabled]="registerForm.invalid || registerForm.pending">Register</button>
+  <button type="submit" [disabled]="registerForm.pending">Register</button>
   <button type="button" routerLink="/login">Cancel</button>
 </form>
 

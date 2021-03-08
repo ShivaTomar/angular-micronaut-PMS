@@ -12,11 +12,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const owners: Owner[] = JSON.parse(localStorage.getItem('owners')) || createDemoUser();
+    const owners: Owner[] = JSON.parse(localStorage.getItem('owners')) || [];
     const pets: Pet[] = JSON.parse(localStorage.getItem('pets')) || [];
     const principle: Owner = JSON.parse(localStorage.getItem('currentUser'));
 
     const { url, method, headers, body } = request;
+
+    console.log(request);
 
     return of(null).pipe((handleRoute))
 
@@ -62,7 +64,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         const owner = filteredOwners[0];
 
         return ok({
-          id: owner.id,
+          id: owner._id,
           username: owner.username,
           fullName: owner.fullName,
           token: 'fake-jwt-token'
@@ -103,7 +105,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       const { fullName, password } = body;
 
 
-    owners.forEach(owner => {
+      owners.forEach(owner => {
         if (owner.username === principle.username) {
           owner.fullName = fullName;
           owner.password = password;
@@ -133,7 +135,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       const newPet: Pet = body;
 
-      newPet.id = pets.length + 1;
+      newPet._id = pets.length + 1;
       newPet.owner = principle.username;
       pets.push(newPet);
       localStorage.setItem('pets', JSON.stringify(pets));
@@ -145,7 +147,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (!isLoggedIn) return Unauthorized();
 
       const id = idFromUrl();
-      const pet = pets.filter(pet => { return pet.id === id && pet.owner === principle.username });
+      const pet = pets.filter(pet => { return pet._id === id && pet.owner === principle.username });
 
       return pet ? ok(pet[0]) : notFound();
     }
@@ -158,7 +160,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       for (let i = 0; i < pets.length; i++) {
         let pet = pets[i];
-        if (pet.id === id && pet.owner === principle.username) {
+        if (pet._id === id && pet.owner === principle.username) {
           pets.splice(i, 1);
           IsDeleted = true;
           localStorage.setItem('pets', JSON.stringify(pets));
@@ -176,7 +178,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       let IsUpdated = false;
 
       pets.forEach(pet => {
-        if (pet.id === id && pet.owner === principle.username) {
+        if (pet._id === id && pet.owner === principle.username) {
           pet.name = updatedPet.name
           pet.color = updatedPet.color
           pet.species = updatedPet.species
@@ -211,16 +213,16 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return ok();
     }
 
-    function createDemoUser(): Owner[] {
+    // function createDemoUser(): Owner[] {
 
-      const owners: Owner[] = [
-        new Owner(1, "Demo Owner", config.demoOwner, "DemoOwner790@gmail.com", config.demoPassword,
-          new Address("163, avantika, ansal", "near shastri nagar", "Ghaziabad", "UP", "201002"))
-      ];
+    //   const owners: Owner[] = [
+    //     new Owner(1, "Demo Owner", config.demoOwner, "DemoOwner790@gmail.com", config.demoPassword,
+    //       new Address("163, avantika, ansal", "near shastri nagar", "Ghaziabad", "UP", "201002"))
+    //   ];
 
-      localStorage.setItem('owners', JSON.stringify(owners));
-      return owners;
-    }
+    //   localStorage.setItem('owners', JSON.stringify(owners));
+    //   return owners;
+    // }
 
     //helper functions
 

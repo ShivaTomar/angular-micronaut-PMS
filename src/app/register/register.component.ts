@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RegisterService } from '../_services/register.service';
-import { isUniqueUsername, isUniqueEmail } from '../_custom/registerFormValidator';
+import { isUniqueUsername } from '../_custom/registerFormValidator';
 
 @Component({
   selector: 'app-register',
@@ -13,9 +13,6 @@ export class RegisterComponent implements OnInit {
   alertMessage: String;
   registerForm: FormGroup;
   loading: boolean;
-
-  get f() { return this.registerForm.controls; }
-  get a() { return this.registerForm.controls.address['controls']; }
 
   get EmailFC() { return this.registerForm.get("email") }
   get FullNameFC() { return this.registerForm.get("fullName") }
@@ -36,14 +33,14 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      fullName: ['John Wick', Validators.required],
-      username: ['John', [Validators.required], isUniqueUsername.bind(this)],
-      email: ['JohnWick860@gmail.com', [Validators.required, Validators.email], isUniqueEmail.bind(this)],
-      password: ['john_123', [Validators.required, Validators.minLength(6)]],
+      fullName: ['shiva tomar', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      username: ['shiva', [Validators.required, Validators.minLength(3), Validators.maxLength(100)], isUniqueUsername.bind(this)],
+      email: ['shivatomar@gmail.com', [Validators.required, Validators.pattern('[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,3}')]],
+      password: ['shiva@1997', [Validators.required, Validators.minLength(6)]],
       address: this.formBuilder.group({
-        line1: ['163, avantika, ansal', Validators.required],
-        line2: ['near shastri nagar'],
-        district: ['Ghaziabad', Validators.required],
+        line1: ['163, avantika ansal', Validators.required],
+        line2: ['near police line'],
+        district: ['ghaziabad', Validators.required],
         state: ['UP', Validators.required],
         pincode: ['201002', [Validators.required, Validators.maxLength(6)]],
       })
@@ -67,7 +64,9 @@ export class RegisterComponent implements OnInit {
   }
 
   fullNameErrorMessage() {
-    return this.FullNameFC.hasError('required') ? 'Full Name  is required' : '';
+    return this.FullNameFC.hasError('required') ? 'Full Name  is required'
+    : this.FullNameFC.hasError('minlength') ? 'Full Name must be at least 3 character long.'
+    : this.FullNameFC.hasError('maxlength') ? 'Full Name cannot be greater than 100 characters.' : '';
   }
 
   passwordErrorMessage() {
@@ -77,13 +76,14 @@ export class RegisterComponent implements OnInit {
 
   EmailErrorMessage() {
     return this.EmailFC.hasError('required') ? 'Email is required'
-    : this.EmailFC.hasError('email') ? 'This email is not valid'
-    : this.EmailFC.hasError('notUniqueEmail') ? 'An account with this email already exists.' : '';
+    : this.EmailFC.hasError('pattern') ? 'This email is not valid' : '';
   }
 
   userNameErrorMessage() {
-    return this.UserNameFC.hasError('required') ? 'User Name  is required'
-    : this.UserNameFC.hasError('notUniqueUsername') ? 'An Account with this email already exists.' : '';
+    return this.UserNameFC.hasError('required') ? 'User Name  is required.'
+    : this.UserNameFC.hasError('notUniqueUsername') ? 'An Account with this username already exists.'
+    : this.UserNameFC.hasError('minlength') ? 'User Name must be at least 3 character long.'
+    : this.UserNameFC.hasError('maxlength') ? 'User Name cannot be greater than 100 characters.' : '';
   }
 
   stateHasError() {
@@ -126,10 +126,9 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.registerService.register(this.registerForm.value).subscribe(
-      success => {
-        this.router.navigate(['/login']);
-      },
+    this.registerService.register(this.registerForm.value).subscribe((success) => {
+      this.router.navigate(['/login']);
+    },
       error => {
         this.alertMessage = error;
       }

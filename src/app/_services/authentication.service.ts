@@ -21,17 +21,6 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string) {
-    return this.http.post<any>(`${config.apiUrl}/login`, { username: username, password: password })
-      .pipe(map(user => {
-        if (user && user.token) {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-        }
-        this.currentUserSubject.next(user);
-        return user;
-      }));
-  }
-
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
@@ -39,5 +28,15 @@ export class AuthenticationService {
 
   isLoggedIn() {
     return localStorage.getItem("currentUser");
+  }
+
+  login(username: String, password: String) {
+    return this.http.post<any>(`${config.apiUrl}/login`, { username: username, password: password }).pipe(map(user => {
+      if (user && user.access_token) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      }
+      this.currentUserSubject.next(user);
+      return user;
+    }))
   }
 }

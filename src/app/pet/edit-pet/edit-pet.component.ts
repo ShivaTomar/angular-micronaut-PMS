@@ -3,7 +3,7 @@ import { PetService } from 'src/app/_services/pet.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Pet } from 'src/app/_models/pet';
-import {Location } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-pet',
@@ -15,16 +15,15 @@ export class EditPetComponent implements OnInit {
   editPetForm: FormGroup;
   alertMessage: String;
 
-  get f() { return this.editPetForm.controls }
   get NameFc() { return this.editPetForm.get('name') }
   get BreedFc() { return this.editPetForm.get('breed') }
   get ColorFc() { return this.editPetForm.get('color') }
   get SpeciesFc() { return this.editPetForm.get('species') }
 
   constructor(
-    private petService: PetService, 
-    private formBuilder: FormBuilder, 
-    private router: ActivatedRoute, 
+    private petService: PetService,
+    private formBuilder: FormBuilder,
+    private router: ActivatedRoute,
     private location: Location
   ) { }
 
@@ -32,10 +31,10 @@ export class EditPetComponent implements OnInit {
     this.petDetails();
 
     this.editPetForm = this.formBuilder.group({
-      name: [this.pet.name, Validators.required],
-      species: [this.pet.species, Validators.required],
-      breed: [this.pet.breed, Validators.required],
-      color: [this.pet.color, Validators.required]
+      name: ['', Validators.required],
+      species: ['', Validators.required],
+      breed: ['', Validators.required],
+      color: ['', Validators.required]
     })
   }
 
@@ -44,15 +43,15 @@ export class EditPetComponent implements OnInit {
   }
 
   breedHasError() {
-    return (this.NameFc.touched || this.NameFc.dirty) && !!this.breedErrorMessage();
+    return (this.BreedFc.touched || this.BreedFc.dirty) && !!this.breedErrorMessage();
   }
 
   colorHasError() {
-    return (this.NameFc.touched || this.NameFc.dirty) && !!this.colorErrorMessage();
+    return (this.ColorFc.touched || this.ColorFc.dirty) && !!this.colorErrorMessage();
   }
 
   speciesHasError() {
-    return (this.NameFc.touched || this.NameFc.dirty) && !!this.speciesErrorMessage();
+    return (this.SpeciesFc.touched || this.SpeciesFc.dirty) && !!this.speciesErrorMessage();
   }
 
   nameErrorMessage() {
@@ -66,7 +65,7 @@ export class EditPetComponent implements OnInit {
   colorErrorMessage() {
     return this.ColorFc.hasError('required') ? 'Color is required' : '';
   }
-  
+
   speciesErrorMessage() {
     return this.SpeciesFc.hasError('required') ? 'Species is required' : '';
   }
@@ -77,8 +76,9 @@ export class EditPetComponent implements OnInit {
   }
 
   onSubmit() {
+
     if (!this.editPetForm.valid) {
-      this.editPetForm.markAllAsTouched;
+      this.editPetForm.markAllAsTouched();
       return;
     }
 
